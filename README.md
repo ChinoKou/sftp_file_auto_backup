@@ -1,1 +1,1 @@
-# sftp_file_auto_backup
+修改配置文件 sftp_config.json

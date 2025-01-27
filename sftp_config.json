@@ -1,0 +1,13 @@
+{
+    "hostname": "127.0.0.1",
+    "port": 12345,
+    "username": "",
+    "password": "",
+    "local_path": "./backup_test",
+    "remote_path": "/",
+    "skip_directories": [
+        "bluemap",
+        "360Downloads",
+        "tmp"
+    ]
+}
