@@ -5,7 +5,7 @@
     "password": "",
     "local_path": "./backup_test",
     "remote_path": "/",
-    "skip_directories": [
+    "ignore_directories": [
         "bluemap",
         "360Downloads",
         "tmp"

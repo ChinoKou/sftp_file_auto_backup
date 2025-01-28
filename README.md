@@ -1,1 +1,1 @@
-修改配置文件 sftp_config.json
+修改配置文件 config.json
