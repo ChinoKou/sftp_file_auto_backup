@@ -41,8 +41,8 @@ def download(remote_path, local_path, ignore_directories):
     if not os.path.exists(local_path):
         os.makedirs(local_path)
 
-    logger.warning("开始遍历远程文件夹")
-    items_num = [0, 0, 0, 0]
+    logger.info("开始遍历远程文件夹")
+    items_num = [0, 0, 0, 0, 0]
 
     for item in items:
         items_num[0] += 1
@@ -50,6 +50,7 @@ def download(remote_path, local_path, ignore_directories):
 
         if filename in ignore_directories:
             logger.warning(f"文件夹: \"{filename}\" 已被忽略")
+            items_num[3] += 1
             continue
 
         remote_item_path = os.path.join(remote_path, filename).replace('\\', '/')
@@ -86,7 +87,7 @@ def download(remote_path, local_path, ignore_directories):
             )
 
     logger.success("遍历完成！")
-    logger.success(f"获取到   {items_num[0]} 个文件")
+    logger.info(f"获取到   {items_num[0]} 个文件")
     if items_num[1]:
         logger.info(f"需要遍历 {items_num[1]} 个文件夹")
     if items_num[2]:
@@ -104,6 +105,7 @@ def download(remote_path, local_path, ignore_directories):
 
             LAST_DOWNLOADED_FILE_PATH = value[4]
             DOWNLOADED_FILES[f"{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]}"] = value[0]
+            items_num[4] += 1
 
             logger.info("------------------------------------------------------------------------------------------")
             logger.info(f"开始下载文件 \"{value[6]}\"")
@@ -113,13 +115,14 @@ def download(remote_path, local_path, ignore_directories):
                 logger.info(f"本地文件最后修改时间: {datetime.fromtimestamp(value[5])}")
 
             logger.info(f"文件大小: {value[2] / 1024:.2f} KB")
+            logger.info(f"正在下载第 {items_num[4]} / {items_num[2]} 个文件")
 
             if value[2] <= CHUNK_SIZE:
                 sftp.get(value[0], value[4])
             else:
                 with sftp.open(value[0], 'rb') as remote_file:
                     with open(value[4], 'wb') as local_file:
-                        with tqdm(total = value[2], unit = 'B', unit_scale = True, desc = value[0]) as pbar:
+                        with tqdm(total = value[2], unit = 'B', unit_scale = True, desc = f"E:{value[0]}") as pbar:
                             while True:
                                 data = remote_file.read(CHUNK_SIZE)
                                 if not data:
