@@ -1,3 +1,4 @@
 tqdm
 loguru
-paramiko
+asyncssh
+aiofiles
